@@ -1,0 +1,1600 @@
+<meta charset="UTF-8">
+<title>South FL Marine Surveyor Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* &#x2500;&#x2500; GMDS BRAND TOKENS &#x2500;&#x2500; */
+:root {
+  --blue:       #3BA3DC;
+  --purple:     #5B2D9E;
+  --mid-blue:   #4A6BC7;
+  --indigo:     #5A5FC4;
+  --grad:       linear-gradient(90deg, #3BA3DC 0%, #5A5FC4 50%, #5B2D9E 100%);
+  --grad-135:   linear-gradient(135deg, #3BA3DC 0%, #5B2D9E 100%);
+  --bg:         #F0F2F8;
+  --surface:    #FFFFFF;
+  --surface-2:  #F4F6FB;
+  --border:     #DDE3F0;
+  --text-1:     #1A1A2E;
+  --text-2:     #4A4A6A;
+  --text-3:     #8A8AB0;
+  --nav-bg:     #0F1628;
+  --nav-border: #1E2A45;
+  --nav-text:   #7A8DB0;
+  --nav-active: #FFFFFF;
+  --green:      #16B87E;
+  --green-dim:  #E6F9F2;
+  --amber:      #F5A623;
+  --amber-dim:  #FEF5E7;
+  --red:        #E8334A;
+  --red-dim:    #FDEAED;
+  --navy-text:  #C8D5F0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0D1220;
+    --surface:   #141C30;
+    --surface-2: #1A2440;
+    --border:    #1E2E50;
+    --text-1:    #EEF2FF;
+    --text-2:    #8A9CC8;
+    --text-3:    #4A5E88;
+    --nav-bg:    #080E1C;
+    --nav-border:#141C30;
+    --green-dim: #0A2E1E;
+    --amber-dim: #2E200A;
+    --red-dim:   #2E0A12;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:        #0D1220;
+  --surface:   #141C30;
+  --surface-2: #1A2440;
+  --border:    #1E2E50;
+  --text-1:    #EEF2FF;
+  --text-2:    #8A9CC8;
+  --text-3:    #4A5E88;
+  --nav-bg:    #080E1C;
+  --nav-border:#141C30;
+  --green-dim: #0A2E1E;
+  --amber-dim: #2E200A;
+  --red-dim:   #2E0A12;
+}
+
+/* &#x2500;&#x2500; RESET &#x2500;&#x2500; */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text-1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* &#x2500;&#x2500; TOPBAR &#x2500;&#x2500; */
+.topbar {
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  height: 56px;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  z-index: 100;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+/* GMDS icon mark &mdash; inline SVG */
+.gmds-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.topbar-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gmds-logo-img {
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--nav-border);
+}
+.topbar-subtitle {
+  font-size: 0.75rem;
+  color: var(--nav-text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.topbar-meta {
+  font-size: 0.72rem;
+  color: var(--nav-text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+.topbar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(59,163,220,0.12);
+  border: 1px solid rgba(59,163,220,0.3);
+  color: var(--blue);
+  font-size: 0.68rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+}
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* &#x2500;&#x2500; SHELL &#x2500;&#x2500; */
+.shell { display: flex; flex: 1; overflow: hidden; }
+
+/* &#x2500;&#x2500; SIDEBAR &#x2500;&#x2500; */
+.sidebar {
+  width: 210px;
+  background: var(--nav-bg);
+  border-right: 1px solid var(--nav-border);
+  padding: 1.25rem 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.nav-group-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3A4E70;
+  padding: 0.9rem 1.25rem 0.3rem;
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  color: var(--nav-text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  position: relative;
+  transition: color 0.15s, background 0.15s;
+  border-radius: 0;
+}
+.nav-btn:hover { color: #C8D5F0; background: rgba(255,255,255,0.04); }
+.nav-btn.active {
+  color: var(--nav-active);
+  background: rgba(59,163,220,0.1);
+}
+.nav-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--grad-135);
+  border-radius: 0 2px 2px 0;
+}
+.nav-icon { font-size: 0.9rem; width: 1.1rem; text-align: center; flex-shrink: 0; opacity: 0.8; }
+.nav-count {
+  margin-left: auto;
+  background: rgba(59,163,220,0.15);
+  color: var(--blue);
+  font-size: 0.62rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+.nav-count.new-tag {
+  background: rgba(22,184,126,0.15);
+  color: var(--green);
+}
+
+/* &#x2500;&#x2500; MAIN &#x2500;&#x2500; */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2.5rem 3rem;
+  scroll-behavior: smooth;
+}
+
+/* &#x2500;&#x2500; SECTIONS &#x2500;&#x2500; */
+.section { display: none; }
+.section.visible { display: block; }
+
+/* &#x2500;&#x2500; SECTION HEADER &#x2500;&#x2500; */
+.section-header { margin-bottom: 2rem; }
+.eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 0.4rem;
+}
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.section-title span {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-desc {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-2);
+  max-width: 62ch;
+  line-height: 1.65;
+}
+
+/* &#x2500;&#x2500; STAT TILES &#x2500;&#x2500; */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.25rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.stat-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad);
+}
+.stat-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-num.blue { color: var(--blue); }
+.stat-num.green { color: var(--green); }
+.stat-num.purple { color: var(--purple); }
+.stat-num.amber { color: var(--amber); }
+.stat-label {
+  margin-top: 0.4rem;
+  font-size: 0.73rem;
+  color: var(--text-2);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* &#x2500;&#x2500; CARDS &#x2500;&#x2500; */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 1rem;
+}
+
+/* &#x2500;&#x2500; TABLES &#x2500;&#x2500; */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+th {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  padding: 0.65rem 0.9rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+td {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface-2); }
+td strong { color: var(--text-1); font-weight: 600; }
+
+/* &#x2500;&#x2500; BADGES &#x2500;&#x2500; */
+.badge {
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.badge-grad {
+  background: var(--grad);
+  color: #fff;
+}
+.badge-blue {
+  background: rgba(59,163,220,0.12);
+  color: var(--blue);
+  border: 1px solid rgba(59,163,220,0.3);
+}
+.badge-purple {
+  background: rgba(91,45,158,0.1);
+  color: var(--purple);
+  border: 1px solid rgba(91,45,158,0.25);
+}
+.badge-green {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(22,184,126,0.25);
+}
+.badge-amber {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(245,166,35,0.3);
+}
+.badge-red {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(232,51,74,0.25);
+}
+.badge-gray {
+  background: var(--surface-2);
+  color: var(--text-3);
+  border: 1px solid var(--border);
+}
+
+/* &#x2500;&#x2500; ALERT BLOCKS &#x2500;&#x2500; */
+.alert {
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.alert strong { display: block; margin-bottom: 0.25rem; font-weight: 700; }
+.alert-blue {
+  background: rgba(59,163,220,0.08);
+  border: 1px solid rgba(59,163,220,0.25);
+  color: var(--text-2);
+}
+.alert-blue strong { color: var(--blue); }
+.alert-green {
+  background: var(--green-dim);
+  border: 1px solid rgba(22,184,126,0.25);
+  color: var(--text-2);
+}
+.alert-green strong { color: var(--green); }
+.alert-amber {
+  background: var(--amber-dim);
+  border: 1px solid rgba(245,166,35,0.25);
+  color: var(--text-2);
+}
+.alert-amber strong { color: var(--amber); }
+.alert-purple {
+  background: rgba(91,45,158,0.07);
+  border: 1px solid rgba(91,45,158,0.2);
+  color: var(--text-2);
+}
+.alert-purple strong { color: var(--purple); }
+
+/* &#x2500;&#x2500; TWO COLUMN &#x2500;&#x2500; */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+@media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+/* &#x2500;&#x2500; LIST &#x2500;&#x2500; */
+.check-list { list-style: none; }
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  padding: 0.3rem 0;
+  line-height: 1.5;
+}
+.check-list li::before {
+  content: '\203A';
+  color: var(--blue);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.05em;
+}
+
+/* &#x2500;&#x2500; GRADIENT DIVIDER &#x2500;&#x2500; */
+.grad-divider {
+  height: 1px;
+  background: var(--grad);
+  border: none;
+  margin: 1.5rem 0;
+  opacity: 0.25;
+}
+
+/* &#x2500;&#x2500; COMPETITOR CARDS &#x2500;&#x2500; */
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.comp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+.comp-card.threat-high::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+}
+.comp-card.threat-ad::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad);
+}
+.comp-card.threat-low::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--green);
+}
+.comp-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 0.2rem;
+}
+.comp-rating {
+  font-size: 0.75rem;
+  color: var(--amber);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.comp-row {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+.comp-row strong { color: var(--text-1); }
+.comp-quote {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-3);
+  border-left: 3px solid var(--blue);
+  padding-left: 0.75rem;
+  line-height: 1.55;
+}
+.comp-footer {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* &#x2500;&#x2500; PERSONA CARDS &#x2500;&#x2500; */
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.persona-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.persona-header {
+  background: var(--grad-135);
+  padding: 1rem 1.25rem 0.9rem;
+}
+.persona-emoji { font-size: 1.5rem; margin-bottom: 0.35rem; }
+.persona-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+.persona-tag {
+  font-size: 0.68rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.15rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.persona-body { padding: 1rem 1.25rem; }
+.persona-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.persona-row:last-child { border-bottom: none; }
+.pk { color: var(--text-3); font-weight: 500; }
+.pv { color: var(--text-1); font-weight: 600; text-align: right; }
+.persona-fear {
+  margin-top: 0.85rem;
+  background: var(--red-dim);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--red);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.persona-fear svg { stroke: var(--red); flex-shrink: 0; margin-top: 2px; }
+.persona-desire {
+  margin-top: 0.5rem;
+  background: var(--green-dim);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--green);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.persona-desire svg { stroke: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+/* &#x2500;&#x2500; KEYWORD CLOUD &#x2500;&#x2500; */
+.kw-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.kw {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.76rem;
+  color: var(--text-2);
+  font-weight: 500;
+}
+.kw.hot {
+  background: rgba(59,163,220,0.1);
+  border-color: rgba(59,163,220,0.3);
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* &#x2500;&#x2500; AD ANGLE CARDS &#x2500;&#x2500; */
+.angle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.angle-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.angle-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 2.5rem;
+}
+.angle-meta { flex: 1; }
+.angle-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 0.4rem;
+}
+.angle-hook {
+  display: inline-block;
+  background: var(--amber-dim);
+  border: 1px solid rgba(245,166,35,0.3);
+  color: var(--amber);
+  border-radius: 8px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+.angle-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.angle-body {
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 680px) { .angle-body { grid-template-columns: 1fr; } }
+.angle-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.5rem;
+}
+.angle-copy {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  font-style: italic;
+  white-space: pre-wrap;
+}
+
+/* &#x2500;&#x2500; ACTION PLAN &#x2500;&#x2500; */
+.phase-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.phase-header {
+  background: var(--grad-135);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.phase-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+.phase-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+}
+.phase-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 0.68rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.phase-body { padding: 1.25rem 1.5rem; }
+
+/* &#x2500;&#x2500; CONTENT GRID &#x2500;&#x2500; */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.content-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem;
+}
+.content-type {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.5rem;
+}
+.content-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+.content-hook {
+  font-size: 0.76rem;
+  color: var(--text-2);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* &#x2500;&#x2500; SCROLLBAR &#x2500;&#x2500; */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--indigo); }
+</style>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="data:image/png;base64,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" alt="GMDS Agency" class="gmds-logo-img">
+    <div class="topbar-divider"></div>
+    <div class="topbar-subtitle">Marine Surveyor Intelligence</div>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-meta">Stuart, FL &middot; South Florida Market</span>
+    <span class="topbar-pill"><span class="live-dot"></span>Sep 2026 &middot; Live Research</span>
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="sidebar">
+    <div class="nav-group-label">Market Data</div>
+    <button class="nav-btn active" onclick="show('overview',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>Market Overview
+    </button>
+    <button class="nav-btn" onclick="show('competitors',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Competitors
+      <span class="nav-count">10</span>
+    </button>
+    <button class="nav-btn" onclick="show('personas',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Buyer Personas
+    </button>
+    <button class="nav-btn" onclick="show('brokers',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>Broker Ecosystem
+    </button>
+
+    <div class="nav-group-label" style="margin-top:0.5rem;">Ad Intelligence</div>
+    <button class="nav-btn" onclick="show('meta',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></span>Meta Ad Audit
+      <span class="nav-count">4</span>
+    </button>
+    <button class="nav-btn" onclick="show('angles',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Ad Angles
+      <span class="nav-count new-tag">NEW</span>
+    </button>
+
+    <div class="nav-group-label" style="margin-top:0.5rem;">Strategy</div>
+    <button class="nav-btn" onclick="show('content',this)">
+      <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></span>Content Engine
+    </button>
+  </nav>
+
+  <main class="main">
+
+    <!-- &#x2550;&#x2550;&#x2550; MARKET OVERVIEW &#x2550;&#x2550;&#x2550; -->
+    <div id="s-overview" class="section visible">
+      <div class="section-header">
+        <div class="eyebrow">Market Overview &middot; Stuart, FL</div>
+        <h1 class="section-title">South Florida <span>Marine Surveyor</span> Landscape</h1>
+        <p class="section-desc">Stuart and the Treasure Coast sit at the center of one of the most active recreational boating markets in the US &mdash; direct access to the ICW, St. Lucie River, and the Atlantic. No local surveyor is running paid advertising.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-tile"><div class="stat-num blue">~10</div><div class="stat-label">Active surveyors in Stuart area</div></div>
+        <div class="stat-tile"><div class="stat-num green">0</div><div class="stat-label">Stuart surveyors running Meta Ads</div></div>
+        <div class="stat-tile"><div class="stat-num amber">4</div><div class="stat-label">US marine survey firms on Meta (total)</div></div>
+        <div class="stat-tile"><div class="stat-num purple">35%</div><div class="stat-label">Used boats with undisclosed issues (industry avg)</div></div>
+        <div class="stat-tile"><div class="stat-num blue">50&ndash;150 ft</div><div class="stat-label">Scott's primary vessel range</div></div>
+        <div class="stat-tile"><div class="stat-num green">$500&ndash;2K+</div><div class="stat-label">Per-survey revenue (size-dependent)</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Why Stuart Is a Tier-1 Marine Market</div>
+          <ul class="check-list">
+            <li>Gateway to the Atlantic via St. Lucie Inlet &mdash; year-round boating weather</li>
+            <li>Between Palm Beach and Port St. Lucie &mdash; 3M+ population catchment</li>
+            <li>Proximity to Palm Beach, Vero Beach, and Fort Pierce brokerage clusters</li>
+            <li>High-net-worth buyers purchasing vessels remotely &mdash; sight unseen</li>
+            <li>Active insurance survey demand driven by hurricane coverage renewals</li>
+            <li>Growing liveaboard and blue-water cruiser community at Manatee Pocket</li>
+            <li>Major transient ICW traffic &mdash; vessels from up and down the East Coast</li>
+          </ul>
+        </div>
+        <div>
+          <div class="alert alert-green">
+            <strong>First-Mover Opportunity</strong>
+            Zero Stuart-based marine surveyors are running paid advertising. The entire local market runs on broker referrals, word of mouth, and Google organic. The first surveyor to build a paid funnel owns the market.
+          </div>
+          <div class="alert alert-amber">
+            <strong>The Window Is Closing</strong>
+            JD Marine Surveying (Jupiter) and Sansoon Yacht Surveys are already running Meta Ads in South Florida &mdash; started March and August 2026, respectively. Scott must move before local competitors follow.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Survey Types & Revenue Profile</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Survey Type</th><th>Primary Buyer</th><th>Trigger</th><th>Frequency</th><th>Ad Suitability</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Pre-Purchase Survey</strong></td><td>Boat buyers</td><td>Before committing to purchase</td><td>Once per transaction</td><td><span class="badge badge-grad">Highest</span></td></tr>
+              <tr><td><strong>Insurance Survey</strong></td><td>Existing owners</td><td>Policy renewal, new insurer</td><td>Every 3&ndash;5 years</td><td><span class="badge badge-blue">High</span></td></tr>
+              <tr><td><strong>Condition & Valuation</strong></td><td>Owners, lenders, estate</td><td>Financing, estate, sale</td><td>On demand</td><td><span class="badge badge-amber">Medium</span></td></tr>
+              <tr><td><strong>Damage Survey</strong></td><td>Insurers, owners</td><td>Post-accident or hurricane</td><td>Event-driven</td><td><span class="badge badge-gray">Referral-driven</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; COMPETITORS &#x2550;&#x2550;&#x2550; -->
+    <div id="s-competitors" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Competitive Intelligence</div>
+        <h1 class="section-title">Stuart & South Florida <span>Surveyors</span></h1>
+        <p class="section-desc">10 active competitors identified via Google Maps. All rely on organic search, referrals, and directory listings &mdash; none running paid ads locally. Two South Florida competitors entered Meta in 2026.</p>
+      </div>
+
+      <div class="comp-grid">
+        <div class="comp-card threat-high">
+          <div class="comp-name">Stuart Marine Services LLC</div>
+          <div class="comp-rating">&#9733; 5.0 &middot; 216 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (772) 233-7676</div>
+          <div class="comp-row"><strong>Coverage:</strong> Palm Beach, Fort Lauderdale, Fort Pierce, Miami</div>
+          <div class="comp-row"><strong>Digital:</strong> Website + Instagram (47 posts, 57 followers)</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"Kevin was extremely knowledgeable and prompt to the schedule."</div>
+          <div class="comp-footer"><span class="badge badge-red">Top Threat</span><span class="badge badge-gray">Highest review volume</span></div>
+        </div>
+
+        <div class="comp-card threat-high">
+          <div class="comp-name">Hamilton & Hamilton Marine Surveyors</div>
+          <div class="comp-rating">&#9733; 4.9 &middot; 225 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (772) 237-3460</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"Super professional and efficient &mdash; got my survey in just hours."</div>
+          <div class="comp-footer"><span class="badge badge-red">High Threat</span><span class="badge badge-gray">Speed is their angle</span></div>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-name">TB Marine Surveyors</div>
+          <div class="comp-rating">&#9733; 5.0 &middot; 102 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (561) 797-1334</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"His knowledge of boats and the boating industry was very evident."</div>
+          <div class="comp-footer"><span class="badge badge-amber">Medium Threat</span></div>
+        </div>
+
+        <div class="comp-card threat-low">
+          <div class="comp-name">SAMS Accredited Diesel & Hull</div>
+          <div class="comp-rating">&#9733; 5.0 &middot; 6 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (561) 797-1334</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"He really understood my goals for getting my boat insured."</div>
+          <div class="comp-footer"><span class="badge badge-green">Low Threat</span></div>
+        </div>
+
+        <div class="comp-card threat-low">
+          <div class="comp-name">Markley Marine Surveying LLC</div>
+          <div class="comp-rating">&#9733; 5.0 &middot; 12 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (561) 504-9576</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"Very professional and knowledgeable Captain."</div>
+          <div class="comp-footer"><span class="badge badge-green">Low Threat</span></div>
+        </div>
+
+        <div class="comp-card threat-ad">
+          <div class="comp-name">JD Marine Surveying (Jupiter)</div>
+          <div class="comp-rating">SAMS / ABYC Certified &middot; South Florida</div>
+          <div class="comp-row"><strong>Phone:</strong> 561-348-0472</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> Running since Mar 2026</div>
+          <div class="comp-quote">"A professional marine survey can help uncover costly issues before they become surprises."</div>
+          <div class="comp-footer"><span class="badge badge-grad">Key Ad Competitor</span></div>
+        </div>
+
+        <div class="comp-card threat-ad">
+          <div class="comp-name">Sansoon Yacht Surveys</div>
+          <div class="comp-rating">26+ years &middot; Superyacht specialist &middot; FL + Canada</div>
+          <div class="comp-row"><strong>Phone:</strong> 236-808-6270</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> Running since Aug 2026</div>
+          <div class="comp-quote">"Vessels up to 120 meters. Commitment to delivering authoritative inspection reports."</div>
+          <div class="comp-footer"><span class="badge badge-grad">Key Ad Competitor</span><span class="badge badge-purple">Superyacht focus</span></div>
+        </div>
+
+        <div class="comp-card threat-low">
+          <div class="comp-name">Navis Marine Services</div>
+          <div class="comp-rating">&#9733; 4.7 &middot; 3 reviews</div>
+          <div class="comp-row"><strong>Phone:</strong> (772) 905-7173</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> None</div>
+          <div class="comp-quote">"Lots of surveyors in FL but Navis is a safe bet."</div>
+          <div class="comp-footer"><span class="badge badge-green">Low Threat</span></div>
+        </div>
+
+        <div class="comp-card threat-ad">
+          <div class="comp-name">Southeast Marine Surveyors</div>
+          <div class="comp-rating">Southeast US coverage</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> Running &mdash; generic, low-effort</div>
+          <div class="comp-quote">Running generic "Full Service Marine Surveyor" ad &mdash; no differentiation, no compelling hook.</div>
+          <div class="comp-footer"><span class="badge badge-amber">Ad Competitor</span><span class="badge badge-gray">Weak creative</span></div>
+        </div>
+
+        <div class="comp-card threat-low">
+          <div class="comp-name">Yachtsman Marine Survey (Chicago)</div>
+          <div class="comp-rating">Lake Michigan &middot; Lifestyle positioning</div>
+          <div class="comp-row"><strong>Meta Ads:</strong> Running &mdash; video lifestyle format</div>
+          <div class="comp-quote">"Another beautiful day to be a marine surveyor" &mdash; video ad, lifestyle angle.</div>
+          <div class="comp-footer"><span class="badge badge-green">Not local</span><span class="badge badge-blue">Model to study</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; BUYER PERSONAS &#x2550;&#x2550;&#x2550; -->
+    <div id="s-personas" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Buyer Personas</div>
+        <h1 class="section-title">Who Needs a <span>Marine Survey</span></h1>
+        <p class="section-desc">Derived from Google review language, Facebook group posts, and boat marketplace listing copy. These are the real people Scott's ads will reach.</p>
+      </div>
+
+      <div class="persona-grid">
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-name">The Out-of-State Buyer</div>
+            <div class="persona-tag">Primary Target &middot; Highest Value</div>
+          </div>
+          <div class="persona-body">
+            <div class="persona-row"><span class="pk">Age</span><span class="pv">45&ndash;62</span></div>
+            <div class="persona-row"><span class="pk">Income</span><span class="pv">High HHI, buying remotely</span></div>
+            <div class="persona-row"><span class="pk">Vessel</span><span class="pv">50&ndash;120 ft powerboat / sportfish</span></div>
+            <div class="persona-row"><span class="pk">Finds Scott via</span><span class="pv">Meta Ad or broker referral</span></div>
+            <div class="persona-row"><span class="pk">Decision speed</span><span class="pv">Urgent &mdash; deal in escrow</span></div>
+            <div class="persona-fear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>"I can't be there in person. What if I buy a boat with hidden problems I can't see from photos?"</div>
+            <div class="persona-desire"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Trusted expert eyes on the vessel. Detailed written report. Confidence to close.</div>
+          </div>
+        </div>
+
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-name">The First-Time Yacht Buyer</div>
+            <div class="persona-tag">High Volume &middot; Easiest to Convert</div>
+          </div>
+          <div class="persona-body">
+            <div class="persona-row"><span class="pk">Age</span><span class="pv">35&ndash;50</span></div>
+            <div class="persona-row"><span class="pk">Experience</span><span class="pv">Knows boats, first large purchase</span></div>
+            <div class="persona-row"><span class="pk">Vessel</span><span class="pv">28&ndash;60 ft powerboat</span></div>
+            <div class="persona-row"><span class="pk">Finds Scott via</span><span class="pv">Meta Ad, Marketplace mention</span></div>
+            <div class="persona-row"><span class="pk">Decision speed</span><span class="pv">Moderate &mdash; shopping phase</span></div>
+            <div class="persona-fear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>"I'm spending my savings. One in three used boats has undisclosed problems. I don't know what I don't know."</div>
+            <div class="persona-desire"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Education + protection. An expert who explains findings in plain language.</div>
+          </div>
+        </div>
+
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-name">The Insurance-Required Owner</div>
+            <div class="persona-tag">Recurring Revenue &middot; High Referrals</div>
+          </div>
+          <div class="persona-body">
+            <div class="persona-row"><span class="pk">Age</span><span class="pv">40&ndash;65</span></div>
+            <div class="persona-row"><span class="pk">Trigger</span><span class="pv">Insurer request, vessel >5 years</span></div>
+            <div class="persona-row"><span class="pk">Vessel</span><span class="pv">Any size, insured</span></div>
+            <div class="persona-row"><span class="pk">Finds Scott via</span><span class="pv">Google, insurance broker referral</span></div>
+            <div class="persona-row"><span class="pk">Decision speed</span><span class="pv">Fast &mdash; deadline-driven</span></div>
+            <div class="persona-fear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>"My insurance is expiring. I need a compliant survey fast or I lose coverage."</div>
+            <div class="persona-desire"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Fast turnaround, ABYC/SAMS compliance, clean report.</div>
+          </div>
+        </div>
+
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-name">The Broker-Referred Buyer</div>
+            <div class="persona-tag">Warm Lead &middot; Fastest Close</div>
+          </div>
+          <div class="persona-body">
+            <div class="persona-row"><span class="pk">Age</span><span class="pv">40&ndash;70</span></div>
+            <div class="persona-row"><span class="pk">Context</span><span class="pv">Mid-transaction, broker sent them</span></div>
+            <div class="persona-row"><span class="pk">Vessel</span><span class="pv">50&ndash;150 ft</span></div>
+            <div class="persona-row"><span class="pk">Finds Scott via</span><span class="pv">Broker recommendation</span></div>
+            <div class="persona-row"><span class="pk">Decision speed</span><span class="pv">Immediate</span></div>
+            <div class="persona-fear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Deal falling through, closing delays. Wants zero friction.</div>
+            <div class="persona-desire"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>Professional who won't create drama. Detailed report quickly.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Buyer Language &mdash; Extracted from Real Reviews & Forum Posts</div>
+        <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:1rem;">The exact words buyers use when they describe what they want and fear. Use these verbatim in ad copy.</p>
+        <div class="kw-cloud">
+          <span class="kw hot">"hidden problems"</span>
+          <span class="kw hot">"uncover costly issues"</span>
+          <span class="kw hot">"before they become surprises"</span>
+          <span class="kw hot">"peace of mind"</span>
+          <span class="kw hot">"protect your investment"</span>
+          <span class="kw">"thorough inspection"</span>
+          <span class="kw">"detailed report"</span>
+          <span class="kw">"knowledgeable"</span>
+          <span class="kw">"prompt"</span>
+          <span class="kw">"very professional"</span>
+          <span class="kw hot">"I couldn't be there in person"</span>
+          <span class="kw">"ABYC certified"</span>
+          <span class="kw">"SAMS member"</span>
+          <span class="kw">"decades of experience"</span>
+          <span class="kw hot">"35% of used boats have undisclosed issues"</span>
+          <span class="kw">"structural damage"</span>
+          <span class="kw hot">"dream into a nightmare"</span>
+          <span class="kw">"unbiased"</span>
+          <span class="kw">"everything is functional and solid"</span>
+          <span class="kw">"turn-key"</span>
+          <span class="kw">"safe bet"</span>
+        </div>
+        <p style="font-size:0.72rem;color:var(--text-3);font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:0.05em;">SOURCE: Google Reviews (Stuart area) &middot; Facebook Marketplace boat listings &middot; Boat-Alert.com buyer guides</p>
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; BROKER ECOSYSTEM &#x2550;&#x2550;&#x2550; -->
+    <div id="s-brokers" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Referral Architecture</div>
+        <h1 class="section-title">The <span>Broker Ecosystem</span></h1>
+        <p class="section-desc">Marine brokerages are the single highest-value referral channel for a surveyor. One well-placed broker relationship generates 10&ndash;20 surveys per year at zero ad cost.</p>
+      </div>
+
+      <div class="alert alert-purple">
+        <strong>Stuart / Treasure Coast has a dense brokerage cluster &mdash; heavily under-networked by competitors.</strong>
+        The Manatee Pocket and Stuart waterfront host multiple major brokerages within a 5-mile radius. None of the competing surveyors appear to be actively marketing their broker relationships.
+      </div>
+
+      <div class="card">
+        <div class="card-title">Target Brokerages &mdash; Stuart & South Florida</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Brokerage</th><th>Location</th><th>Focus</th><th>Priority</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Denison Yachting</strong></td><td>Fort Lauderdale + South FL</td><td>Megayachts, 50&ndash;200 ft</td><td><span class="badge badge-grad">Tier 1</span></td></tr>
+              <tr><td><strong>United Yacht Sales</strong></td><td>Stuart, FL (Manatee Pocket)</td><td>Power & sail, all sizes</td><td><span class="badge badge-grad">Tier 1 &mdash; Local</span></td></tr>
+              <tr><td><strong>Bluewater Yacht Sales</strong></td><td>Stuart, FL</td><td>Offshore sportfishing</td><td><span class="badge badge-grad">Tier 1 &mdash; Scott's sweet spot</span></td></tr>
+              <tr><td><strong>Legendary Marine</strong></td><td>Destin + South FL</td><td>Center consoles, sportfish</td><td><span class="badge badge-blue">Tier 2</span></td></tr>
+              <tr><td><strong>MarineMax</strong></td><td>Stuart, Palm Beach</td><td>New + pre-owned, all sizes</td><td><span class="badge badge-blue">Tier 2</span></td></tr>
+              <tr><td><strong>FLIBS Brokers</strong></td><td>Fort Lauderdale</td><td>Superyacht transactions</td><td><span class="badge badge-gray">Tier 3 &mdash; Relationship build</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">What Brokers Need from a Surveyor</div>
+          <ul class="check-list">
+            <li>Fast turnaround &mdash; deal timelines are tight</li>
+            <li>Professional report that doesn't kill deals unnecessarily</li>
+            <li>ABYC / SAMS credentials for lender compliance</li>
+            <li>Available for vessels 50&ndash;150 ft</li>
+            <li>Reliable communication &mdash; won't go dark</li>
+            <li>Willing to travel within South Florida</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Broker Outreach Strategy</div>
+          <ul class="check-list">
+            <li>Direct DM campaign to local broker Instagram accounts</li>
+            <li>Physical drop-in to Manatee Pocket marina offices</li>
+            <li>Create a 1-page "broker packet" with credentials + turnaround times</li>
+            <li>Offer a complimentary walkthrough survey for new broker relationships</li>
+            <li>Monthly check-in via WhatsApp once relationship is established</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; META AD AUDIT &#x2550;&#x2550;&#x2550; -->
+    <div id="s-meta" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Meta Ad Library Audit &middot; September 2026</div>
+        <h1 class="section-title">Who's Running Ads & <span>What They're Saying</span></h1>
+        <p class="section-desc">~26 results for "marine surveyor" in the US Meta Ad Library. Only 4 are actual marine survey firms. The rest are RV dealers, boat sellers, and brokerages that mention "surveyor" in listing copy.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-tile"><div class="stat-num blue">4</div><div class="stat-label">Real marine survey firms running Meta Ads (US total)</div></div>
+        <div class="stat-tile"><div class="stat-num green">0</div><div class="stat-label">Ads targeting Stuart, FL specifically</div></div>
+        <div class="stat-tile"><div class="stat-num amber">Mar 2026</div><div class="stat-label">Earliest South FL survey ad started</div></div>
+        <div class="stat-tile"><div class="stat-num purple">Static only</div><div class="stat-label">All competitors &mdash; no video ads</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Competitor Ad-by-Ad Analysis</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Advertiser</th><th>Since</th><th>Geography</th><th>Angle</th><th>Format</th><th>CTA</th><th>Weakness</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>JD Marine Surveying</strong></td>
+                <td>Mar 25, 2026</td>
+                <td>South Florida</td>
+                <td>Fear &rarr; Authority &rarr; Phone CTA</td>
+                <td>Static image + phone</td>
+                <td>Call now</td>
+                <td>No social proof, single format, no video</td>
+              </tr>
+              <tr>
+                <td><strong>Shipyard Consulting Services</strong></td>
+                <td>Mar 6, 2026</td>
+                <td>South Florida</td>
+                <td>Services list + multi-audience</td>
+                <td>Text-heavy static</td>
+                <td>Send message</td>
+                <td>No hook, no differentiation, generic copy</td>
+              </tr>
+              <tr>
+                <td><strong>Sansoon Yacht Surveys</strong></td>
+                <td>Aug 24, 2026</td>
+                <td>Florida + Canada</td>
+                <td>Credentials + superyacht</td>
+                <td>Long-form text, 3 CTAs</td>
+                <td>Book Now</td>
+                <td>Overlong copy, no visuals, spam-adjacent</td>
+              </tr>
+              <tr>
+                <td><strong>Southeast Marine Surveyors</strong></td>
+                <td>Sep 3, 2026</td>
+                <td>Southeast US</td>
+                <td>Generic "full service"</td>
+                <td>Static</td>
+                <td>Send message</td>
+                <td>No hook, no copy, no reason to click</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">JD Marine &mdash; Ad Copy (Verbatim)</div>
+          <div class="angle-copy">"A professional marine survey can help uncover costly issues before they become surprises. Jay DeYoung provides thorough, certified inspections backed by decades of on-water experience. Call 561-348-0472 to schedule your survey."</div>
+          <div style="margin-top:1rem;">
+            <div class="angle-label">What works</div>
+            <ul class="check-list" style="font-size:0.8rem;">
+              <li>Fear-based hook resonates &mdash; "before they become surprises"</li>
+              <li>Named person builds trust (Jay DeYoung)</li>
+              <li>Certification signal</li>
+            </ul>
+            <div class="angle-label" style="margin-top:0.75rem;">How to beat it</div>
+            <ul class="check-list" style="font-size:0.8rem;">
+              <li>No video &mdash; static only is easy to outperform</li>
+              <li>No social proof / no review count</li>
+              <li>Generic pre-purchase angle only</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sansoon Yacht Surveys &mdash; Ad Structure</div>
+          <div class="angle-copy">"Realize Your Dream of Becoming a Boat Owner &ndash; Avoid Surprises. Purchasing a vessel is a significant investment. Without a professional assessment, hidden defects can turn your dream into an unexpected liability..."</div>
+          <div style="margin-top:1rem;">
+            <div class="angle-label">Notable observations</div>
+            <ul class="check-list" style="font-size:0.8rem;">
+              <li>Most detailed copy of all competitors &mdash; likely over-long</li>
+              <li>"Dream &rarr; Nightmare" frame appears in their copy</li>
+              <li>Superyacht focus (up to 120m) is a differentiator</li>
+              <li>26+ years experience highlighted prominently</li>
+              <li>Multiple booking CTAs &mdash; aggressively conversion-focused</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-blue">
+        <strong>The White Space: No video, no social proof, no vessel-type targeting, no Stuart-specific geo.</strong>
+        All four active advertisers use generic "professional marine surveyor" positioning. The first to show up with a confident persona, real credentials, video content, and Stuart-specific copy owns the market.
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; AD ANGLES &#x2550;&#x2550;&#x2550; -->
+    <div id="s-angles" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Meta Ads Strategy &middot; Actionable</div>
+        <h1 class="section-title"><span>Ad Angles</span> for Qualified Buyer Generation</h1>
+        <p class="section-desc">Six angles derived from competitor ad analysis, Google review language, buyer forum posts, and real buyer psychology. Each maps to a specific audience, fear, and format recommendation.</p>
+      </div>
+
+      <div class="alert alert-blue">
+        <strong>Strategic positioning for Scott:</strong> Zero Stuart-based surveyors run paid ads. JD Marine Surveying (Jupiter) owns the fear-based angle but uses static images only. Scott's opportunity is video walkthroughs + social proof + Stuart-specific geo-targeting &mdash; before any competitor mirrors the move.
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">01</div>
+          <div class="angle-meta">
+            <div class="angle-title">The Hidden Problem Reveal</div>
+            <div class="angle-hook">"35% of used boats have undisclosed issues. Is yours one of them?"</div>
+            <div class="angle-tags">
+              <span class="badge badge-grad">Highest Priority</span>
+              <span class="badge badge-blue">Pre-Purchase Buyers</span>
+              <span class="badge badge-amber">Fear-Based</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">Before you wire the money, get the facts.
+
+One in three used boats has hidden problems the seller didn't disclose &mdash; structural damage, water intrusion, engine issues. A professional marine survey by a certified inspector can save you tens of thousands.
+
+Scott [Last Name] &middot; Stuart, FL &middot; ABYC Certified
+Pre-purchase surveys for vessels 50&ndash;150 ft
+
+Message to check availability for your vessel.</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: Boaters 40&ndash;65, HHI $150k+, South FL</li>
+              <li>Format: Video &mdash; Scott on deck pointing at findings</li>
+              <li>Secondary: Static with "35% of boats" stat as headline</li>
+              <li>Placement: Facebook Feed + Instagram Reels</li>
+              <li>CTA: "Message" &mdash; no landing page needed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">02</div>
+          <div class="angle-meta">
+            <div class="angle-title">Remote Buyer Trust</div>
+            <div class="angle-hook">"You can't fly down to walk the decks. I'll be your eyes on the boat."</div>
+            <div class="angle-tags">
+              <span class="badge badge-grad">High Priority</span>
+              <span class="badge badge-blue">Out-of-State Buyers</span>
+              <span class="badge badge-purple">Trust-Based</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">Found your dream boat in Stuart &mdash; but you're in Ohio?
+
+I've surveyed hundreds of vessels right here on Florida's Treasure Coast. I'll walk every inch, document every finding, and give you the full picture before you commit.
+
+Video summary included with every report.
+
+Scott [Last Name] &middot; Marine Surveyor &middot; Stuart, FL
+ABYC Certified &middot; 50&ndash;150 ft Vessels</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: Yacht/boat interest, out-of-FL states, HHI $200k+</li>
+              <li>Format: Video &mdash; Scott walking vessel, voiceover narration</li>
+              <li>Key differentiator: "Video summary included" &mdash; no competitor does this</li>
+              <li>CTA: "Send Message" for immediate DM</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">03</div>
+          <div class="angle-meta">
+            <div class="angle-title">Insurance Deadline Urgency</div>
+            <div class="angle-hook">"Your insurance company wants a survey. Don't lose your coverage."</div>
+            <div class="angle-tags">
+              <span class="badge badge-blue">Insurance Owners</span>
+              <span class="badge badge-amber">Urgency-Based</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">Insurance company requesting a survey?
+
+Don't let your coverage lapse over a scheduling delay. I deliver compliant marine surveys on your timeline &mdash; typically within 5 business days.
+
+ABYC certified. Reports accepted by all major marine insurers.
+
+Stuart, FL &middot; Treasure Coast &middot; Palm Beach area</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: Boat owners 40&ndash;70, South FL, homeowners (HHI signal)</li>
+              <li>Format: Static with urgency headline graphic</li>
+              <li>Best run in Q4 (hurricane season renewals peak)</li>
+              <li>CTA: "Book Now" or "Get a Quote"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">04</div>
+          <div class="angle-meta">
+            <div class="angle-title">The Expert Authority</div>
+            <div class="angle-hook">"I've surveyed 500+ vessels on Florida's Treasure Coast. Here's what I find."</div>
+            <div class="angle-tags">
+              <span class="badge badge-purple">Authority-Based</span>
+              <span class="badge badge-blue">All Audiences</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">After surveying hundreds of vessels in Stuart and across South Florida, I've seen what sellers don't tell you.
+
+Cracked stringers. Hidden osmotic blistering. Engine room corrosion that photos never show.
+
+Get a certified marine survey before you sign anything.
+
+Scott [Last Name] &middot; ABYC Certified Marine Surveyor
+Stuart, FL &middot; Pre-Purchase, Insurance & Condition Surveys</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: Broad boat interest, South FL, 35&ndash;65</li>
+              <li>Format: Video &mdash; short educational clip showing real findings</li>
+              <li>UGC-style works here: handheld camera, authentic</li>
+              <li>Strong for retargeting anyone who engaged with Angle 01</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">05</div>
+          <div class="angle-meta">
+            <div class="angle-title">Lifestyle + Community</div>
+            <div class="angle-hook">"Another great day protecting someone's investment on the water."</div>
+            <div class="angle-tags">
+              <span class="badge badge-green">Brand Awareness</span>
+              <span class="badge badge-blue">Warm Audience</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">This morning: a 65-foot Viking sportfisher at Manatee Pocket.
+
+Tomorrow: wherever your vessel is.
+
+Marine surveys for the serious buyer. Stuart, FL.
+
+Scott [Last Name] &middot; ABYC Certified &middot; 50&ndash;150 ft Vessels</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: Local South FL boating community, warm/retarget</li>
+              <li>Format: Short video / Reel &mdash; authentic, low-production</li>
+              <li>Model: Yachtsman Marine Survey Chicago (best practice reference)</li>
+              <li>Goal: Brand recall, community trust, organic shares</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="angle-card">
+        <div class="angle-header">
+          <div class="angle-num">06</div>
+          <div class="angle-meta">
+            <div class="angle-title">The Investment Protection Frame</div>
+            <div class="angle-hook">"A $1,000 survey can save you $50,000 in post-purchase surprises."</div>
+            <div class="angle-tags">
+              <span class="badge badge-grad">High Converting</span>
+              <span class="badge badge-blue">ROI-Minded Buyers</span>
+            </div>
+          </div>
+        </div>
+        <div class="angle-body">
+          <div>
+            <div class="angle-label">Ad Copy &mdash; Short Form</div>
+            <div class="angle-copy">A boat is a major investment. The cost of a professional survey is a fraction of one unexpected repair.
+
+Hidden engine problems. Structural damage. Systems that look fine but aren't.
+
+I find what sellers don't disclose &mdash; and I document it in a court-admissible report.
+
+Scott [Last Name] &middot; Marine Surveyor &middot; Stuart, FL</div>
+          </div>
+          <div>
+            <div class="angle-label">Format & Targeting</div>
+            <ul class="check-list">
+              <li>Audience: High-income buyers, recent boat searches, South FL</li>
+              <li>Format: Static with bold cost-comparison graphic</li>
+              <li>"Court-admissible report" is a key differentiator phrase</li>
+              <li>Test as carousel: Finding &rarr; Cost &rarr; Survey Fee comparison</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- &#x2550;&#x2550;&#x2550; CONTENT ENGINE &#x2550;&#x2550;&#x2550; -->
+    <div id="s-content" class="section">
+      <div class="section-header">
+        <div class="eyebrow">Organic Content Strategy</div>
+        <h1 class="section-title">The <span>Content Engine</span></h1>
+        <p class="section-desc">A systematic content approach that builds organic reach, warms ad audiences, and establishes Scott as the go-to marine surveyor on Florida's Treasure Coast.</p>
+      </div>
+
+      <div class="two-col" style="margin-bottom:1.5rem;">
+        <div class="card">
+          <div class="card-title">Content Pillars</div>
+          <ul class="check-list">
+            <li><strong>Education:</strong> "What to know before buying a used boat" &mdash; builds trust, earns shares</li>
+            <li><strong>Behind the Survey:</strong> Real findings from real surveys &mdash; fear activation in action</li>
+            <li><strong>Local Authority:</strong> Stuart/Treasure Coast marina content &mdash; community building</li>
+            <li><strong>Credentials & Process:</strong> ABYC/SAMS explained, what a report includes</li>
+            <li><strong>Testimonials:</strong> Client outcome stories &mdash; social proof in the feed</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Platform Strategy</div>
+          <ul class="check-list">
+            <li><strong>Facebook:</strong> Primary &mdash; 40&ndash;65 boat owners actively in groups, buying/selling</li>
+            <li><strong>Instagram:</strong> Secondary &mdash; Reels for discovery, Stories for community</li>
+            <li><strong>YouTube:</strong> Longer survey walkthrough videos &mdash; SEO value + ad retargeting</li>
+            <li><strong>Facebook Groups:</strong> Active participation in South FL boating groups (non-promotional)</li>
+            <li><strong>Google Business:</strong> Review generation campaign &mdash; target 50+ reviews by Month 3</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Content Calendar &mdash; Month 1 (Launch Phase)</div>
+        <div class="content-grid">
+          <div class="content-card">
+            <div class="content-type">Week 1 &middot; Reel</div>
+            <div class="content-title">"What I look for in a pre-purchase marine survey"</div>
+            <div class="content-hook">Scott on deck, 60-second walkthrough. Shows expertise immediately.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 1 &middot; Static Post</div>
+            <div class="content-title">"5 things your boat seller won't tell you"</div>
+            <div class="content-hook">High-share educational content. Fear-based angle.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 2 &middot; Reel</div>
+            <div class="content-title">"What osmotic blistering looks like &mdash; and why it matters"</div>
+            <div class="content-hook">Specific technical finding. Positions Scott as true expert.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 2 &middot; Story</div>
+            <div class="content-title">Day in the life: Survey at Manatee Pocket</div>
+            <div class="content-hook">Local flavor. Community building. Behind-the-scenes feel.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 3 &middot; Testimonial</div>
+            <div class="content-title">"[Client] saved $30K before closing &mdash; here's what we found"</div>
+            <div class="content-hook">Social proof + outcome story. Highest-converting content type.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 3 &middot; Educational</div>
+            <div class="content-title">"ABYC vs SAMS &mdash; what do marine survey certifications actually mean?"</div>
+            <div class="content-hook">Educates buyers. Establishes credential authority.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 4 &middot; Reel</div>
+            <div class="content-title">"Survey day: Viking sportfisher, 65 ft, Manatee Pocket"</div>
+            <div class="content-hook">Real survey. Real vessel. Authentic. Local.</div>
+          </div>
+          <div class="content-card">
+            <div class="content-type">Week 4 &middot; FAQ Post</div>
+            <div class="content-title">"How long does a marine survey take?" (Q&A format)</div>
+            <div class="content-hook">Answers the #1 pre-purchase question. High search intent.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('visible');
+  if (btn) btn.classList.add('active');
+  document.querySelector('.main').scrollTop = 0;
+}
+</script>
